@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +23,17 @@ class MainActivity : AppCompatActivity() {
 
         listOfButtonListener()
 
+        viewModel =
+            ViewModelProvider(this, MyViewModelFactory(this)).get(MyViewModel::class.java)
+
         viewModel.resultOfCalc.observe(this) {
             binding.resString.text = it
         }
+
         viewModel.resultOfDropEndSymbol.observe(this) {
             binding.mathString.text = it
         }
+
     }
 
     private fun clearText() {
@@ -138,5 +143,4 @@ class MainActivity : AppCompatActivity() {
             viewModel.calculate(binding.mathString.text.toString())
         }
     }
-
 }

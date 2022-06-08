@@ -1,6 +1,7 @@
 package com.example.calculatormvvm
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.objecthunter.exp4j.ExpressionBuilder
@@ -16,8 +17,11 @@ class MyViewModel() : ViewModel() {
         Log.d(TAG, "MyViewModel_created")
     }
 
-    val resultOfCalc = MutableLiveData<String>()
-    val resultOfDropEndSymbol = MutableLiveData<String>()
+    private val resultOfCalcMutable = MutableLiveData<String>()
+    val resultOfCalc: LiveData<String> = resultOfCalcMutable
+
+    private val resultOfDropEndSymbolMutable = MutableLiveData<String>()
+    val resultOfDropEndSymbol: LiveData<String> = resultOfDropEndSymbolMutable
 
     override fun onCleared() {
         super.onCleared()
@@ -31,15 +35,17 @@ class MyViewModel() : ViewModel() {
             val calc = ExpressionBuilder(stringForCalc).build()
             res = calc.evaluate().toLong().toString()
         } catch (e: Exception) {
-            res = "ERROR_MESSAGE"
+            res = "ERROR"
             Log.e(TAG, e.message.toString())
         }
-        resultOfCalc.value = res
+        resultOfCalcMutable.value = res
     }
 
     fun dropEndSymbol(mathStr: String) {
         Log.d(TAG, "MyViewModel.dropEndSymbol")
         val res = mathStr.dropLast(1)
-        resultOfDropEndSymbol.value = res
+        resultOfDropEndSymbolMutable.value = res
     }
+
+
 }
