@@ -1,10 +1,10 @@
-package com.example.calculatormvvm
+package com.example.calculatormvvm.presentation
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.calculatormvvm.domain.Calculator
+import com.example.calculatormvvm.data.Calculator
 
 
 class MyViewModel() : ViewModel() {
@@ -28,6 +28,7 @@ class MyViewModel() : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         Log.d(TAG, "MyViewModel_onCleared")
+
     }
 
     fun calculate(stringForCalc: String) {

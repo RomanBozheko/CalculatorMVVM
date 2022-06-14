@@ -1,4 +1,4 @@
-package com.example.calculatormvvm.domain
+package com.example.calculatormvvm.data
 
 interface MyCalculator {
     fun calculate(str: String):String

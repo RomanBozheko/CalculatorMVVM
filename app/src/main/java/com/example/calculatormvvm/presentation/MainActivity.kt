@@ -1,4 +1,4 @@
-package com.example.calculatormvvm
+package com.example.calculatormvvm.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         listOfButtonListener()
 

@@ -1,7 +1,7 @@
-package com.example.calculatormvvm.domain
+package com.example.calculatormvvm.data
 
 import android.util.Log
-import com.example.calculatormvvm.MyViewModel
+import com.example.calculatormvvm.presentation.MyViewModel
 import net.objecthunter.exp4j.ExpressionBuilder
 import java.lang.Exception
 
