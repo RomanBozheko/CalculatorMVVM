@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.calculatormvvm.data.Calculator
+import com.example.calculatormvvm.domain.Calculator
 
 
 class MyViewModel() : ViewModel() {

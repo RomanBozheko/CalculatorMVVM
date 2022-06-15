@@ -1,4 +1,4 @@
-package com.example.calculatormvvm.data
+package com.example.calculatormvvm.domain
 
 import android.util.Log
 import com.example.calculatormvvm.presentation.MyViewModel
