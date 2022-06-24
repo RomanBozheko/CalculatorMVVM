@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.example.calculatormvvm.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -140,6 +143,7 @@ class MainActivity : AppCompatActivity() {
         binding.buttonBack.setOnClickListener() {
             viewModel.dropEndSymbol(binding.mathString.text.toString())
         }
+
         binding.buttonRavno.setOnClickListener() {
             viewModel.calculate(binding.mathString.text.toString())
         }

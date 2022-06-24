@@ -5,8 +5,8 @@ import com.example.calculatormvvm.presentation.MyViewModel
 import net.objecthunter.exp4j.ExpressionBuilder
 import java.lang.Exception
 
-class Calculator: MyCalculator {
-    override fun calculate(str: String):String {
+class Calculator : CalculatorInterface {
+    override suspend fun calculate(str: String): String {
         var res: String
         try {
             val calc = ExpressionBuilder(str).build()
