@@ -31,6 +31,7 @@ class MyViewModel() : ViewModel() {
     val resultOfDropEndSymbol: LiveData<String> = resultOfDropEndSymbolMutable
 
     private val coroutineScope = CoroutineScope(Job() + Dispatchers.Default)
+
 //    private lateinit var job:Job
 
 
@@ -69,11 +70,12 @@ class MyViewModel() : ViewModel() {
             Log.d(TAG, "Thread_Name >>> ${Thread.currentThread().name}" + " || result = $result")
 
             withContext(Dispatchers.Main) {
+
                 if (result.isNotEmpty()) {
                     resultOfCalcMutable.value = result
                     Log.d(TAG, "Thread_Name >>> ${Thread.currentThread().name}")
                 } else {
-                    Log.e(TAG, "MyViewModel.calculate.Error")
+                    throw IllegalArgumentException("Err_")
                 }
             }
         }
