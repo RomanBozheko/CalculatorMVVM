@@ -30,11 +30,9 @@ class MyViewModel() : ViewModel() {
     private val resultOfDropEndSymbolMutable = MutableLiveData<String>()
     val resultOfDropEndSymbol: LiveData<String> = resultOfDropEndSymbolMutable
 
-    private val coroutineScope = CoroutineScope(Job() + Dispatchers.Default)
+    private val coroutineScope = CoroutineScope(/*Job() + */Dispatchers.Default)
 
 //    private lateinit var job:Job
-
-
 
 
     override fun onCleared() {
@@ -42,7 +40,7 @@ class MyViewModel() : ViewModel() {
         Log.d(TAG, "MyViewModel_onCleared")
 
         coroutineScope.cancel()
-        Log.d(TAG, "MyViewModel_job_cancel")
+        Log.d(TAG, "MyViewModel_coroutineScope_cancel")
 
 
     }
@@ -50,8 +48,8 @@ class MyViewModel() : ViewModel() {
     fun calculate(stringForCalc: String) /* = CoroutineScope(Dispatchers.Default).launch */ {
         Log.d(TAG, "MyViewModel.calculate")
         /**
-        * CoroutineContext - Dispatchers, id, name, Exception
-        **/
+         * CoroutineContext - Dispatchers, id, name, Exception
+         **/
 
 
 //        job.launch{}
@@ -64,12 +62,19 @@ class MyViewModel() : ViewModel() {
 
         coroutineScope.launch {
 
+//
+//            while (isActive) {
+
+//            }
+//            ensureActive() ????   yield()
+
 //            resultOfCalcMutable.postValue(calculator.calculate(stringForCalc))
 
             val result = calculator.calculate(stringForCalc)
             Log.d(TAG, "Thread_Name >>> ${Thread.currentThread().name}" + " || result = $result")
 
             withContext(Dispatchers.Main) {
+
 
                 if (result.isNotEmpty()) {
                     resultOfCalcMutable.value = result
@@ -78,7 +83,9 @@ class MyViewModel() : ViewModel() {
                     throw IllegalArgumentException("Err_")
                 }
             }
+
         }
+
     }
 
 //    fun calculate(stringForCalc: String) {
