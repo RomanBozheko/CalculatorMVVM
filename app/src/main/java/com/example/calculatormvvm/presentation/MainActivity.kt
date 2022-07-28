@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
 
         listOfButtonListener()
-        mine()
+        test()
 
         viewModel =
             ViewModelProvider(this, MyViewModelFactory(this)).get(MyViewModel::class.java)
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             binding.mathString.text = it
         }
     }
-    private  fun mine() = CoroutineScope(Dispatchers.Default).launch{
+    private  fun test() = CoroutineScope(Dispatchers.Default).launch{
         val flow = viewModel.simple()
         flow.collect{value -> println(value)}
     }
