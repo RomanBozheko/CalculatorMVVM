@@ -8,6 +8,8 @@ import com.example.calculatormvvm.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
 
         listOfButtonListener()
+        mine()
 
         viewModel =
             ViewModelProvider(this, MyViewModelFactory(this)).get(MyViewModel::class.java)
@@ -33,12 +36,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.resultOfCalc.observe(this) {
             binding.resString.text = it
         }
-
         viewModel.resultOfDropEndSymbol.observe(this) {
             binding.mathString.text = it
         }
-
     }
+    private  fun mine() = CoroutineScope(Dispatchers.Default).launch{
+        val flow = viewModel.simple()
+        flow.collect{value -> println(value)}
+    }
+
 
     private fun clearText() {
         binding.mathString.text = ""

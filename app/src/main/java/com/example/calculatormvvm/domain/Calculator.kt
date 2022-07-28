@@ -18,7 +18,7 @@ class Calculator : CalculatorInterface {
         return res
     }
 
-    override fun dropEndSymbol(str: String): String {
+    override  fun dropEndSymbol(str: String): String {
         return str.dropLast(1)
     }
 }

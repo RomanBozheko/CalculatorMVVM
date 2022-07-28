@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.calculatormvvm.domain.Calculator
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
+import kotlinx.coroutines.flow.*
+
 
 
 class MyViewModel() : ViewModel() {
@@ -22,18 +22,15 @@ class MyViewModel() : ViewModel() {
 
     private val calculator = Calculator()
 
-    private val resultOfCalcMutable =
-        MutableLiveData<String>() //kotlin unit // корутины (супервайзер, скоуп)
-
+    private val resultOfCalcMutable = MutableLiveData<String>()
     val resultOfCalc: LiveData<String> = resultOfCalcMutable
 
     private val resultOfDropEndSymbolMutable = MutableLiveData<String>()
     val resultOfDropEndSymbol: LiveData<String> = resultOfDropEndSymbolMutable
 
-    private val coroutineScope = CoroutineScope(/*Job() + */Dispatchers.Default)
+    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
 //    private lateinit var job:Job
-
 
     override fun onCleared() {
         super.onCleared()
@@ -93,10 +90,13 @@ class MyViewModel() : ViewModel() {
 //        resultOfCalcMutable.value = calculator.calculate(stringForCalc)
 //    }
 
+    fun simple(): Flow<Int> = flow{
+        println(" Flow start... ")
+        emit(159753)
+    }
+
     fun dropEndSymbol(mathStr: String) {
         Log.d(TAG, "MyViewModel.dropEndSymbol")
         resultOfDropEndSymbolMutable.value = calculator.dropEndSymbol(mathStr)
     }
-
-
 }
