@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.calculatormvvm.domain.Calculator
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
-
 
 
 class MyViewModel() : ViewModel() {
@@ -18,15 +18,27 @@ class MyViewModel() : ViewModel() {
 
     init {
         Log.d(TAG, "MyViewModel_created")
+
     }
 
     private val calculator = Calculator()
 
-    private val resultOfCalcMutable = MutableLiveData<String>()
-    val resultOfCalc: LiveData<String> = resultOfCalcMutable
+    private val resultOfCalcMutable = MutableStateFlow(value = "")
+    val resultOfCalc: StateFlow<String> = resultOfCalcMutable.asStateFlow()
 
-    private val resultOfDropEndSymbolMutable = MutableLiveData<String>()
-    val resultOfDropEndSymbol: LiveData<String> = resultOfDropEndSymbolMutable
+
+//    private val resultOfCalcMutable = MutableLiveData<String>()
+//    val resultOfCalc: LiveData<String> = resultOfCalcMutable
+
+    private val resultOfDropEndSymbolMutable = MutableSharedFlow<String>(
+        replay = 1,
+        extraBufferCapacity = 0,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val resultOfDropEndSymbol: SharedFlow<String> = resultOfDropEndSymbolMutable.asSharedFlow()
+
+//    private val resultOfDropEndSymbolMutable = MutableLiveData<String>()
+//    val resultOfDropEndSymbol: LiveData<String> = resultOfDropEndSymbolMutable
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -90,13 +102,14 @@ class MyViewModel() : ViewModel() {
 //        resultOfCalcMutable.value = calculator.calculate(stringForCalc)
 //    }
 
-    fun simple(): Flow<Int> = flow{
-        println(" Flow start... ")
-        emit(159753)
-    }
-
     fun dropEndSymbol(mathStr: String) {
         Log.d(TAG, "MyViewModel.dropEndSymbol")
-        resultOfDropEndSymbolMutable.value = calculator.dropEndSymbol(mathStr)
+        resultOfDropEndSymbolMutable.tryEmit(calculator.dropEndSymbol(mathStr))
+
     }
+
+//    fun dropEndSymbol(mathStr: String) {
+//        Log.d(TAG, "MyViewModel.dropEndSymbol")
+//        resultOfDropEndSymbolMutable.value = calculator.dropEndSymbol(mathStr)
+//    }
 }

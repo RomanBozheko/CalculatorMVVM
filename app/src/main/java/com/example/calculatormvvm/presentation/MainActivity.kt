@@ -3,10 +3,13 @@ package com.example.calculatormvvm.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.example.calculatormvvm.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -26,25 +29,50 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         listOfButtonListener()
-        test()
 
         viewModel =
             ViewModelProvider(this, MyViewModelFactory(this)).get(MyViewModel::class.java)
+        /* resultOfCalc */
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.resultOfCalc.collect() { resultOfCalc ->
+//                    binding.resString.text = resultOfCalc
+//                }
+//        }
 
-        viewModel.resultOfCalc.observe(this) {
-            binding.resString.text = it
-        }
-        viewModel.resultOfDropEndSymbol.observe(this) {
-            binding.mathString.text = it
-        }
-    }
-    private  fun test() = CoroutineScope(Dispatchers.Default).launch{
-        val flow = viewModel.simple()
-        flow.collect{value -> println(value)}
-    }
+//        lifecycleScope.launch {
+//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+//                viewModel.resultOfCalc.collect{ resultOfCalc ->
+//                    binding.resString.text = resultOfCalc
+//                }
+//            }
+//        }
 
+        lifecycleScope.launch {
+            viewModel.resultOfCalc
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .collect { resultOfCalc ->
+                    binding.resString.text = resultOfCalc
+                }
+        }
+        /* resultOfCalc */
+//        viewModel.resultOfCalc.observe(this) {
+//            binding.resString.text = it
+//        }
+
+
+        lifecycleScope.launch{
+            viewModel.resultOfDropEndSymbol
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .collect{resultOfDropEndSymbol ->
+                    binding.mathString.text = resultOfDropEndSymbol
+                }
+        }
+
+//        viewModel.resultOfDropEndSymbol.observe(this) {
+//            binding.mathString.text = it
+//        }
+    }
 
     private fun clearText() {
         binding.mathString.text = ""
